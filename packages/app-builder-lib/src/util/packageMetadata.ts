@@ -107,6 +107,12 @@ function checkDependencies(dependencies: Record<string, string> | Nullish, error
       }
     }
 
+    if (updaterVersion.startsWith("workspace:")) {
+      const updaterPkgPath = path.resolve(process.cwd(), "node_modules/electron-updater/package.json")
+      const json = fsExtra.readJsonSync(updaterPkgPath)
+      updaterVersion = json.version
+    }
+
     // for testing auto-update using workspace electron-updater
     const prefixes = ["link:", "file:"]
     for (const prefix of prefixes) {
